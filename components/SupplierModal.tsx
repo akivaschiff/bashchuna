@@ -3,8 +3,6 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { RatingDisplay } from '@/components/RatingDisplay'
-import { RatingModal } from '@/components/RatingModal'
-import { EditSupplierModal } from '@/components/EditSupplierModal'
 import { formatDate } from '@/lib/utils'
 import { Supplier, RatingWithUser } from '@/types'
 
@@ -30,6 +28,8 @@ type SupplierModalProps = {
   } | null
   isOpen: boolean
   onClose: () => void
+  onOpenRating: () => void
+  onOpenEdit: () => void
 }
 
 export function SupplierModal({
@@ -40,9 +40,9 @@ export function SupplierModal({
   userRating,
   isOpen,
   onClose,
+  onOpenRating,
+  onOpenEdit,
 }: SupplierModalProps) {
-  const [showRatingModal, setShowRatingModal] = useState(false)
-  const [showEditModal, setShowEditModal] = useState(false)
   const [copied, setCopied] = useState(false)
 
   // Calculate averages
@@ -152,7 +152,7 @@ export function SupplierModal({
                         <div className="mb-6 flex flex-col sm:flex-row gap-3">
                           {isCreator && (
                             <button
-                              onClick={() => setShowEditModal(true)}
+                              onClick={onOpenEdit}
                               className="w-full sm:flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
                             >
                               ערוך ספק
@@ -161,7 +161,7 @@ export function SupplierModal({
 
                           {userId && (
                             <button
-                              onClick={() => setShowRatingModal(true)}
+                              onClick={onOpenRating}
                               className="w-full sm:flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
                             >
                               {userRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
@@ -248,24 +248,6 @@ export function SupplierModal({
           </div>
         </Dialog>
       </Transition>
-
-      {/* Rating Modal */}
-      {showRatingModal && userId && (
-        <RatingModal
-          supplierId={supplier.id}
-          userId={userId}
-          existingRating={userRating || undefined}
-          onClose={() => setShowRatingModal(false)}
-        />
-      )}
-
-      {/* Edit Modal */}
-      {showEditModal && (
-        <EditSupplierModal
-          supplier={supplier}
-          onClose={() => setShowEditModal(false)}
-        />
-      )}
     </>
   )
 }

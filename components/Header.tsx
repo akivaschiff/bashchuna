@@ -19,8 +19,9 @@ export async function Header() {
   return (
     <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
-          בשכונה
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+          <img src="/icon.png" alt="בשכונה" className="h-8 w-8 sm:h-10 sm:w-10" />
+          <span className="text-xl sm:text-2xl font-bold text-blue-600">המומלצים שלנו</span>
         </Link>
         <div className="flex items-center gap-3 sm:gap-4">
           {isAdmin && (

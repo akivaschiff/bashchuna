@@ -1,9 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SupplierCard } from './SupplierCard'
 import { CreateSupplierModal } from './CreateSupplierModal'
 import { SupplierModal } from './SupplierModal'
+import { WelcomeModal } from './WelcomeModal'
+import { RatingModal } from './RatingModal'
+import { EditSupplierModal } from './EditSupplierModal'
 import { SupplierWithCreator, TRADES } from '@/types'
 import { createClient } from '@/lib/supabase'
 
@@ -19,6 +22,36 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
   const [selectedSupplier, setSelectedSupplier] = useState<any>(null)
   const [supplierRatings, setSupplierRatings] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false)
+  const [showRatingModal, setShowRatingModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [cachedSupplierForModal, setCachedSupplierForModal] = useState<any>(null)
+  const [cachedUserRating, setCachedUserRating] = useState<any>(null)
+
+  // Show welcome modal for non-authenticated users on first visit
+  useEffect(() => {
+    if (!userId) {
+      const hasSeenWelcome = localStorage.getItem('hasSeenWelcome')
+      if (!hasSeenWelcome) {
+        setShowWelcomeModal(true)
+      }
+    }
+  }, [userId])
+
+  const handleWelcomeClose = () => {
+    setShowWelcomeModal(false)
+    localStorage.setItem('hasSeenWelcome', 'true')
+  }
+
+  const handleSignIn = async () => {
+    const supabase = createClient()
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/api/auth/callback`,
+      },
+    })
+  }
 
   const filteredSuppliers = suppliers.filter((supplier) => {
     const matchesSearch = supplier.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -141,8 +174,54 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
           } : null}
           isOpen={!!selectedSupplier}
           onClose={() => setSelectedSupplier(null)}
+          onOpenRating={() => {
+            setCachedSupplierForModal(selectedSupplier)
+            setCachedUserRating(userRating)
+            setSelectedSupplier(null)
+            setShowRatingModal(true)
+          }}
+          onOpenEdit={() => {
+            setCachedSupplierForModal(selectedSupplier)
+            setSelectedSupplier(null)
+            setShowEditModal(true)
+          }}
         />
       )}
+
+      {showRatingModal && userId && cachedSupplierForModal && (
+        <RatingModal
+          supplierId={cachedSupplierForModal.id}
+          userId={userId}
+          existingRating={cachedUserRating ? {
+            quality: cachedUserRating.quality,
+            price: cachedUserRating.price,
+            reliability: cachedUserRating.reliability,
+            communication: cachedUserRating.communication,
+            comment: cachedUserRating.comment,
+          } : undefined}
+          onClose={() => {
+            setShowRatingModal(false)
+            setCachedSupplierForModal(null)
+            setCachedUserRating(null)
+          }}
+        />
+      )}
+
+      {showEditModal && cachedSupplierForModal && (
+        <EditSupplierModal
+          supplier={cachedSupplierForModal}
+          onClose={() => {
+            setShowEditModal(false)
+            setCachedSupplierForModal(null)
+          }}
+        />
+      )}
+
+      <WelcomeModal
+        isOpen={showWelcomeModal}
+        onClose={handleWelcomeClose}
+        onSignIn={handleSignIn}
+      />
     </div>
   )
 }

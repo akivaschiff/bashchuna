@@ -58,7 +58,6 @@ export default async function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">מצא ספקים מקומיים</h1>
       <SupplierList suppliers={suppliersWithAverages} userId={user?.id || null} />
     </div>
   )

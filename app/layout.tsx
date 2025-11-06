@@ -6,8 +6,8 @@ import { Header } from '@/components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'בשכונה - המלצות על ספקים בשכונה',
-  description: 'מצא ודרג ספקים מקומיים בשכונה שלך',
+  title: 'בשכונה - המלצות על ספקים בגבעות עדן',
+  description: 'מצא ודרג ספקים מקומיים בגבעות עדן - פלטפורמה לשיתוף המלצות על בעלי מקצוע ושירותים בשכונה',
   icons: {
     icon: [
       { url: '/icon.png', type: 'image/png' },
