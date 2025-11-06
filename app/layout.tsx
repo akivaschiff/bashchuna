@@ -8,6 +8,13 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'BaShchuna - Neighborhood Supplier Recommendations',
   description: 'Find and rate local suppliers in your neighborhood',
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({
