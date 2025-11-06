@@ -2,6 +2,14 @@
 
 A Next.js application for sharing and rating local suppliers in your neighborhood.
 
+## UX Behavior Summary
+
+**Homepage (Mobile-First):** Grid of supplier cards. Click card → opens slide-in modal (desktop: from right, mobile: full screen). Browse suppliers without page navigation.
+
+**Sharing:** Modal has "שתף" button that copies `/supplier/[id]` URL. Dedicated page at `/supplier/[id]` exists for direct links & Open Graph previews.
+
+**Key Flow:** Browse in modal on homepage. Share direct URLs for WhatsApp. Both views coexist (Option 1 approach).
+
 ## Features
 
 - **Google OAuth Authentication** - Secure sign-in with Google
