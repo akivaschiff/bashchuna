@@ -43,14 +43,14 @@ export type RatingWithUser = Rating & {
 }
 
 export const TRADES = [
-  'Plumber',
-  'Electrician',
-  'Contractor',
-  'Cleaner',
-  'Painter',
-  'Carpenter',
-  'Landscaper',
-  'Other',
+  'שרברב',
+  'חשמלאי',
+  'קבלן',
+  'מנקה',
+  'צבע',
+  'נגר',
+  'גנן',
+  'אחר',
 ] as const
 
 export type Trade = typeof TRADES[number]

@@ -28,7 +28,7 @@ function StarInput({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium mb-2">{label} (optional)</label>
+      <label className="block text-sm font-medium mb-2">{label} (אופציונלי)</label>
       <div className="flex gap-2">
         <button
           type="button"
@@ -37,7 +37,7 @@ function StarInput({
             value === null ? 'bg-gray-300' : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
-          N/A
+          ללא
         </button>
         {[1, 2, 3, 4, 5].map((star) => (
           <button
@@ -99,7 +99,7 @@ export function RatingModal({
       onClose()
     } catch (error) {
       console.error('Error saving rating:', error)
-      alert('Failed to save rating. Please try again.')
+      alert('שגיאה בשמירת הדירוג. נסה שוב.')
     } finally {
       setLoading(false)
     }
@@ -109,43 +109,43 @@ export function RatingModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">
-          {existingRating ? 'Update Your Rating' : 'Rate This Supplier'}
+          {existingRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <StarInput
-            label="Quality"
+            label="איכות"
             value={formData.quality}
             onChange={(value) => setFormData({ ...formData, quality: value })}
           />
 
           <StarInput
-            label="Price/Value"
+            label="מחיר"
             value={formData.price}
             onChange={(value) => setFormData({ ...formData, price: value })}
           />
 
           <StarInput
-            label="Reliability"
+            label="אמינות"
             value={formData.reliability}
             onChange={(value) => setFormData({ ...formData, reliability: value })}
           />
 
           <StarInput
-            label="Communication"
+            label="תקשורת"
             value={formData.communication}
             onChange={(value) => setFormData({ ...formData, communication: value })}
           />
 
           <div>
             <label className="block text-sm font-medium mb-1">
-              Comment (optional)
+              הערה (אופציונלי)
             </label>
             <textarea
               value={formData.comment || ''}
               onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
               className="w-full px-3 py-2 border rounded-md h-24"
-              placeholder="Share your experience..."
+              placeholder="שתף את החוויה שלך..."
             />
           </div>
 
@@ -155,7 +155,7 @@ export function RatingModal({
               disabled={loading}
               className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
             >
-              {loading ? 'Saving...' : existingRating ? 'Update Rating' : 'Submit Rating'}
+              {loading ? 'שומר...' : existingRating ? 'עדכן דירוג' : 'שלח דירוג'}
             </button>
             <button
               type="button"
@@ -163,7 +163,7 @@ export function RatingModal({
               disabled={loading}
               className="flex-1 bg-gray-200 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50"
             >
-              Cancel
+              ביטול
             </button>
           </div>
         </form>

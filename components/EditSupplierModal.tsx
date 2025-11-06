@@ -2,22 +2,22 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase'
-import { TRADES } from '@/types'
+import { TRADES, Supplier } from '@/types'
 import { useRouter } from 'next/navigation'
 
-type CreateSupplierModalProps = {
-  userId: string
+type EditSupplierModalProps = {
+  supplier: Supplier
   onClose: () => void
 }
 
-export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProps) {
+export function EditSupplierModal({ supplier, onClose }: EditSupplierModalProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: '',
-    trade: 'שרברב',
-    phone: '',
-    description: '',
+    name: supplier.name,
+    trade: supplier.trade,
+    phone: supplier.phone,
+    description: supplier.description,
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
 
@@ -27,9 +27,9 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
 
     try {
       const supabase = createClient()
-      let imageUrl: string | null = null
+      let imageUrl = supplier.image_url
 
-      // Upload image if provided
+      // Upload new image if provided
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop()
         const fileName = `${Date.now()}.${fileExt}`
@@ -46,25 +46,25 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
         imageUrl = publicUrl
       }
 
-      // Create supplier
-      const { error: insertError } = await supabase
+      // Update supplier
+      const { error: updateError } = await supabase
         .from('suppliers')
-        .insert({
+        .update({
           name: formData.name,
           trade: formData.trade,
           phone: formData.phone,
           description: formData.description,
           image_url: imageUrl,
-          created_by: userId,
         })
+        .eq('id', supplier.id)
 
-      if (insertError) throw insertError
+      if (updateError) throw updateError
 
       router.refresh()
       onClose()
     } catch (error) {
-      console.error('Error creating supplier:', error)
-      alert('שגיאה ביצירת ספק. נסה שוב.')
+      console.error('Error updating supplier:', error)
+      alert('שגיאה בעדכון ספק. נסה שוב.')
     } finally {
       setLoading(false)
     }
@@ -73,7 +73,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-2xl font-bold mb-4">הוסף ספק חדש</h2>
+        <h2 className="text-2xl font-bold mb-4">ערוך ספק</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -127,13 +127,16 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">תמונה (אופציונלי)</label>
+            <label className="block text-sm font-medium mb-1">תמונה חדשה (אופציונלי)</label>
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setImageFile(e.target.files?.[0] || null)}
               className="w-full"
             />
+            {supplier.image_url && !imageFile && (
+              <p className="text-xs text-gray-500 mt-1">התמונה הנוכחית תישאר אם לא תבחר תמונה חדשה</p>
+            )}
           </div>
 
           <div className="flex gap-3 pt-4">
@@ -142,7 +145,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
               disabled={loading}
               className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
             >
-              {loading ? 'יוצר...' : 'צור ספק'}
+              {loading ? 'מעדכן...' : 'עדכן ספק'}
             </button>
             <button
               type="button"

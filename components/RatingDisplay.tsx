@@ -35,7 +35,7 @@ function RatingItem({
 }) {
   if (value === null) {
     return compact ? null : (
-      <div className="text-sm text-gray-500">{label}: Not rated yet</div>
+      <div className="text-sm text-gray-500">{label}: טרם דורג</div>
     )
   }
 
@@ -66,17 +66,17 @@ export function RatingDisplay({
   if (!hasAnyRating) {
     return (
       <div className="text-sm text-gray-500">
-        No ratings yet
+        אין דירוגים עדיין
       </div>
     )
   }
 
   return (
     <div className={compact ? 'space-y-1' : 'space-y-2'}>
-      <RatingItem label="Quality" value={quality} count={ratingCount} compact={compact} />
-      <RatingItem label="Price" value={price} count={ratingCount} compact={compact} />
-      <RatingItem label="Reliability" value={reliability} count={ratingCount} compact={compact} />
-      <RatingItem label="Communication" value={communication} count={ratingCount} compact={compact} />
+      <RatingItem label="איכות" value={quality} count={ratingCount} compact={compact} />
+      <RatingItem label="מחיר" value={price} count={ratingCount} compact={compact} />
+      <RatingItem label="אמינות" value={reliability} count={ratingCount} compact={compact} />
+      <RatingItem label="תקשורת" value={communication} count={ratingCount} compact={compact} />
     </div>
   )
 }

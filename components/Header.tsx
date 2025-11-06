@@ -20,7 +20,7 @@ export async function Header() {
     <header className="border-b bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-blue-600">
-          BaShchuna
+          בשכונה
         </Link>
         <div className="flex items-center gap-4">
           {isAdmin && (
@@ -28,7 +28,7 @@ export async function Header() {
               href="/admin"
               className="text-sm text-gray-600 hover:text-gray-900"
             >
-              Admin
+              ניהול
             </Link>
           )}
           <AuthButton user={user} />

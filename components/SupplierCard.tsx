@@ -33,7 +33,7 @@ export function SupplierCard({ supplier }: { supplier: SupplierWithCreator }) {
         </div>
 
         <p className="text-xs text-gray-500">
-          Added by {supplier.creator.name}
+          נוסף על ידי {supplier.creator.name}
         </p>
       </div>
     </Link>

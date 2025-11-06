@@ -6,8 +6,8 @@ import { Header } from '@/components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'BaShchuna - Neighborhood Supplier Recommendations',
-  description: 'Find and rate local suppliers in your neighborhood',
+  title: 'בשכונה - המלצות על ספקים בשכונה',
+  description: 'מצא ודרג ספקים מקומיים בשכונה שלך',
   icons: {
     icon: [
       { url: '/icon.png', type: 'image/png' },
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="he" dir="rtl">
       <body className={inter.className}>
         <Header />
         <main>{children}</main>

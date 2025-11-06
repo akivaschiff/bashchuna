@@ -22,8 +22,8 @@ export default async function AdminPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
-          <p className="text-gray-600">You do not have permission to access this page.</p>
+          <h1 className="text-2xl font-bold text-red-600 mb-4">גישה נדחתה</h1>
+          <p className="text-gray-600">אין לך הרשאה לגשת לעמוד זה.</p>
         </div>
       </div>
     )
@@ -44,7 +44,7 @@ export default async function AdminPage() {
 
   if (error) {
     console.error('Error fetching suppliers:', error)
-    return <div className="p-4">Error loading suppliers</div>
+    return <div className="p-4">שגיאה בטעינת ספקים</div>
   }
 
   const recentSuppliers: SupplierWithCreator[] = (suppliers || []).map((supplier) => ({
@@ -66,15 +66,15 @@ export default async function AdminPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Admin Panel</h1>
+      <h1 className="text-3xl font-bold mb-8">פאנל ניהול</h1>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-bold mb-4">
-          Recent Suppliers (Last 30 Days)
+          ספקים אחרונים (30 יום אחרונים)
         </h2>
 
         {recentSuppliers.length === 0 ? (
-          <p className="text-gray-500">No suppliers added in the last 30 days.</p>
+          <p className="text-gray-500">לא נוספו ספקים ב-30 הימים האחרונים.</p>
         ) : (
           <AdminClient suppliers={recentSuppliers} />
         )}

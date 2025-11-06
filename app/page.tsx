@@ -18,7 +18,7 @@ export default async function Home() {
 
   if (error) {
     console.error('Error fetching suppliers:', error)
-    return <div className="p-4">Error loading suppliers</div>
+    return <div className="p-4">שגיאה בטעינת הספקים</div>
   }
 
   // Calculate averages and format data
@@ -53,7 +53,7 @@ export default async function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Find Local Suppliers</h1>
+      <h1 className="text-3xl font-bold mb-8">מצא ספקים מקומיים</h1>
       <SupplierList suppliers={suppliersWithAverages} userId={user?.id || null} />
     </div>
   )

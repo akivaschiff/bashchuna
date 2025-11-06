@@ -22,14 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!supplier) {
     return {
-      title: 'Supplier Not Found',
+      title: 'ספק לא נמצא',
     }
   }
 
   const description = supplier.description.slice(0, 160) + (supplier.description.length > 160 ? '...' : '')
 
   return {
-    title: `${supplier.name} - ${supplier.trade} | BaShchuna`,
+    title: `${supplier.name} - ${supplier.trade} | בשכונה`,
     description: description,
     openGraph: {
       title: `${supplier.name} - ${supplier.trade}`,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         }
       ] : [],
       type: 'website',
-      siteName: 'BaShchuna',
+      siteName: 'בשכונה',
     },
     twitter: {
       card: 'summary_large_image',
@@ -103,6 +103,9 @@ export default async function SupplierProfilePage({ params }: Props) {
     ? ratingsWithUsers.find((r) => r.user_id === user.id)
     : null
 
+  // Check if current user is the creator
+  const isCreator = user ? supplier.created_by === user.id : false
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -125,32 +128,33 @@ export default async function SupplierProfilePage({ params }: Props) {
 
             <div className="mb-4">
               <a
-                href={`https://wa.me/${supplier.phone.replace(/[^0-9]/g, '')}`}
+                href={`https://wa.me/972${supplier.phone.replace(/^0/, '').replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
               >
-                📱 WhatsApp: {supplier.phone}
+                📱 וואטסאפ: {supplier.phone}
               </a>
             </div>
 
             <p className="text-gray-700 mb-4">{supplier.description}</p>
 
             <p className="text-sm text-gray-500">
-              Added by {supplier.creator.name} on {formatDate(supplier.created_at)}
+              נוסף על ידי {supplier.creator.name} בתאריך {formatDate(supplier.created_at)}
             </p>
           </div>
         </div>
       </div>
 
       <SupplierProfileClient
-        supplierId={id}
+        supplier={supplier}
         userId={user?.id || null}
+        isCreator={isCreator}
         userRating={userRating}
       />
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-2xl font-bold mb-4">Rating Summary</h2>
+        <h2 className="text-2xl font-bold mb-4">סיכום דירוגים</h2>
         <RatingDisplay
           quality={avgQuality}
           price={avgPrice}
@@ -162,11 +166,11 @@ export default async function SupplierProfilePage({ params }: Props) {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold mb-4">
-          Reviews ({ratingsWithUsers.length})
+          ביקורות ({ratingsWithUsers.length})
         </h2>
 
         {ratingsWithUsers.length === 0 ? (
-          <p className="text-gray-500">No reviews yet. Be the first to rate!</p>
+          <p className="text-gray-500">אין ביקורות עדיין. היה הראשון לדרג!</p>
         ) : (
           <div className="space-y-4">
             {ratingsWithUsers.map((rating) => (
@@ -189,16 +193,16 @@ export default async function SupplierProfilePage({ params }: Props) {
 
                 <div className="mb-2 text-sm">
                   {rating.quality !== null && (
-                    <span className="mr-4">Quality: {rating.quality}★</span>
+                    <span className="ml-4">איכות: {rating.quality}★</span>
                   )}
                   {rating.price !== null && (
-                    <span className="mr-4">Price: {rating.price}★</span>
+                    <span className="ml-4">מחיר: {rating.price}★</span>
                   )}
                   {rating.reliability !== null && (
-                    <span className="mr-4">Reliability: {rating.reliability}★</span>
+                    <span className="ml-4">אמינות: {rating.reliability}★</span>
                   )}
                   {rating.communication !== null && (
-                    <span className="mr-4">Communication: {rating.communication}★</span>
+                    <span className="ml-4">תקשורת: {rating.communication}★</span>
                   )}
                 </div>
 

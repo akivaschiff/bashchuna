@@ -40,7 +40,7 @@ export function AdminClient({ suppliers }: { suppliers: SupplierWithCreator[] })
       setConfirmDeleteId(null)
     } catch (error) {
       console.error('Error deleting supplier:', error)
-      alert('Failed to delete supplier. Please try again.')
+      alert('שגיאה במחיקת ספק. נסה שוב.')
     } finally {
       setDeletingId(null)
     }
@@ -69,7 +69,7 @@ export function AdminClient({ suppliers }: { suppliers: SupplierWithCreator[] })
             <h3 className="text-lg font-semibold">{supplier.name}</h3>
             <p className="text-gray-600 text-sm">{supplier.trade}</p>
             <p className="text-gray-500 text-sm mt-1">
-              Added by {supplier.creator.name}
+              נוסף על ידי {supplier.creator.name}
             </p>
             <p className="text-gray-500 text-sm">
               {formatDate(supplier.created_at)}
@@ -87,10 +87,10 @@ export function AdminClient({ suppliers }: { suppliers: SupplierWithCreator[] })
               } disabled:opacity-50`}
             >
               {deletingId === supplier.id
-                ? 'Deleting...'
+                ? 'מוחק...'
                 : confirmDeleteId === supplier.id
-                ? 'Click Again to Confirm'
-                : 'Delete'}
+                ? 'לחץ שוב לאישור'
+                : 'מחק'}
             </button>
           </div>
         </div>
