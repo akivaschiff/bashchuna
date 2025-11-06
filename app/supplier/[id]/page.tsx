@@ -34,6 +34,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${supplier.name} - ${supplier.trade}`,
       description: description,
+      images: supplier.image_url ? [
+        {
+          url: supplier.image_url,
+          width: 1200,
+          height: 630,
+          alt: `${supplier.name} - ${supplier.trade}`,
+        }
+      ] : [],
+      type: 'website',
+      siteName: 'BaShchuna',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${supplier.name} - ${supplier.trade}`,
+      description: description,
       images: supplier.image_url ? [supplier.image_url] : [],
     },
   }
