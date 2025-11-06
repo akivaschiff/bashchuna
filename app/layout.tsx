@@ -24,9 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="he" dir="rtl">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-gray-50 min-h-screen`}>
         <Header />
-        <main>{children}</main>
+        <main className="min-h-[calc(100vh-64px)]">{children}</main>
       </body>
     </html>
   )

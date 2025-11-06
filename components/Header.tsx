@@ -17,16 +17,16 @@ export async function Header() {
   }
 
   return (
-    <header className="border-b bg-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-blue-600">
+    <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+        <Link href="/" className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
           בשכונה
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {isAdmin && (
             <Link
               href="/admin"
-              className="text-sm text-gray-600 hover:text-gray-900"
+              className="text-sm sm:text-base text-gray-600 hover:text-gray-900 font-medium"
             >
               ניהול
             </Link>
