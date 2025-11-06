@@ -99,9 +99,17 @@ export default async function SupplierProfilePage({ params }: Props) {
   const avgCommunication = calculateAvg('communication')
 
   // Check if user has already rated
-  const userRating = user
+  const userRatingData = user
     ? ratingsWithUsers.find((r) => r.user_id === user.id)
     : null
+
+  const userRating = userRatingData ? {
+    quality: userRatingData.quality,
+    price: userRatingData.price,
+    reliability: userRatingData.reliability,
+    communication: userRatingData.communication,
+    comment: userRatingData.comment,
+  } : null
 
   // Check if current user is the creator
   const isCreator = user ? supplier.created_by === user.id : false

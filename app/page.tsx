@@ -23,7 +23,12 @@ export default async function Home() {
 
   // Calculate averages and format data
   const suppliersWithAverages: SupplierWithCreator[] = (suppliers || []).map((supplier) => {
-    const ratings = supplier.ratings || []
+    const ratings = supplier.ratings as Array<{
+      quality: number | null
+      price: number | null
+      reliability: number | null
+      communication: number | null
+    }> || []
     const ratingCount = ratings.length
 
     const calculateAvg = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
