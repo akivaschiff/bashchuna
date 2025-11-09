@@ -86,18 +86,24 @@ export default async function SupplierProfilePage({ params }: Props) {
 
   const ratingsWithUsers: RatingWithUser[] = ratings || []
 
-  // Calculate averages
-  const calculateAvg = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
-    const values = ratingsWithUsers.map(r => r[field]).filter((v): v is number => v !== null)
-    return values.length > 0
-      ? values.reduce((sum, val) => sum + val, 0) / values.length
-      : null
+  // Filter out empty ratings (where all rating fields are null)
+  const nonEmptyRatings = ratingsWithUsers.filter(r =>
+    r.quality !== null || r.price !== null || r.reliability !== null || r.communication !== null
+  )
+
+  // Calculate averages and counts for each dimension
+  const calculateAvgAndCount = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
+    const values = nonEmptyRatings.map(r => r[field]).filter((v): v is number => v !== null)
+    return {
+      avg: values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length : null,
+      count: values.length
+    }
   }
 
-  const avgQuality = calculateAvg('quality')
-  const avgPrice = calculateAvg('price')
-  const avgReliability = calculateAvg('reliability')
-  const avgCommunication = calculateAvg('communication')
+  const qualityData = calculateAvgAndCount('quality')
+  const priceData = calculateAvgAndCount('price')
+  const reliabilityData = calculateAvgAndCount('reliability')
+  const communicationData = calculateAvgAndCount('communication')
 
   // Check if user has already rated
   const userRatingData = user
@@ -174,24 +180,27 @@ export default async function SupplierProfilePage({ params }: Props) {
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 className="text-2xl font-bold mb-4">סיכום דירוגים</h2>
         <RatingDisplay
-          quality={avgQuality}
-          price={avgPrice}
-          reliability={avgReliability}
-          communication={avgCommunication}
-          ratingCount={ratingsWithUsers.length}
+          quality={qualityData.avg}
+          price={priceData.avg}
+          reliability={reliabilityData.avg}
+          communication={communicationData.avg}
+          qualityCount={qualityData.count}
+          priceCount={priceData.count}
+          reliabilityCount={reliabilityData.count}
+          communicationCount={communicationData.count}
         />
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-bold mb-4">
-          ביקורות ({ratingsWithUsers.length})
+          ביקורות ({nonEmptyRatings.length})
         </h2>
 
-        {ratingsWithUsers.length === 0 ? (
+        {nonEmptyRatings.length === 0 ? (
           <p className="text-gray-500">אין ביקורות עדיין. היה הראשון לדרג!</p>
         ) : (
           <div className="space-y-4">
-            {ratingsWithUsers.map((rating) => (
+            {nonEmptyRatings.map((rating) => (
               <div key={rating.id} className="border-b pb-4 last:border-b-0">
                 <div className="flex items-center gap-3 mb-2">
                   {rating.user.avatar_url && (

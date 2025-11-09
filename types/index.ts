@@ -35,7 +35,10 @@ export type SupplierWithCreator = Supplier & {
   avg_price: number | null
   avg_reliability: number | null
   avg_communication: number | null
-  rating_count: number
+  quality_count: number
+  price_count: number
+  reliability_count: number
+  communication_count: number
 }
 
 export type RatingWithUser = Rating & {

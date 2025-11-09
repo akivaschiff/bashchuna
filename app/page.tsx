@@ -29,14 +29,24 @@ export default async function Home() {
       reliability: number | null
       communication: number | null
     }> || []
-    const ratingCount = ratings.length
 
-    const calculateAvg = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
-      const values = ratings.map(r => r[field]).filter((v): v is number => v !== null)
-      return values.length > 0
-        ? values.reduce((sum, val) => sum + val, 0) / values.length
-        : null
+    // Filter out empty ratings (where all fields are null)
+    const nonEmptyRatings = ratings.filter(r =>
+      r.quality !== null || r.price !== null || r.reliability !== null || r.communication !== null
+    )
+
+    const calculateAvgAndCount = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
+      const values = nonEmptyRatings.map(r => r[field]).filter((v): v is number => v !== null)
+      return {
+        avg: values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length : null,
+        count: values.length
+      }
     }
+
+    const qualityData = calculateAvgAndCount('quality')
+    const priceData = calculateAvgAndCount('price')
+    const reliabilityData = calculateAvgAndCount('reliability')
+    const communicationData = calculateAvgAndCount('communication')
 
     return {
       id: supplier.id,
@@ -48,11 +58,14 @@ export default async function Home() {
       created_by: supplier.created_by,
       created_at: supplier.created_at,
       creator: supplier.creator,
-      avg_quality: calculateAvg('quality'),
-      avg_price: calculateAvg('price'),
-      avg_reliability: calculateAvg('reliability'),
-      avg_communication: calculateAvg('communication'),
-      rating_count: ratingCount,
+      avg_quality: qualityData.avg,
+      avg_price: priceData.avg,
+      avg_reliability: reliabilityData.avg,
+      avg_communication: communicationData.avg,
+      quality_count: qualityData.count,
+      price_count: priceData.count,
+      reliability_count: reliabilityData.count,
+      communication_count: communicationData.count,
     }
   })
 

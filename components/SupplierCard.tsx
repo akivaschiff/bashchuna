@@ -50,7 +50,10 @@ export function SupplierCard({ supplier, onClick }: SupplierCardProps) {
             price={supplier.avg_price}
             reliability={supplier.avg_reliability}
             communication={supplier.avg_communication}
-            ratingCount={supplier.rating_count}
+            qualityCount={supplier.quality_count}
+            priceCount={supplier.price_count}
+            reliabilityCount={supplier.reliability_count}
+            communicationCount={supplier.communication_count}
             compact
           />
         </div>

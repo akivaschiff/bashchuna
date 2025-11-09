@@ -45,18 +45,19 @@ export function SupplierModal({
 }: SupplierModalProps) {
   const [copied, setCopied] = useState(false)
 
-  // Calculate averages
-  const calculateAvg = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
+  // Calculate averages and counts for each dimension
+  const calculateAvgAndCount = (field: 'quality' | 'price' | 'reliability' | 'communication') => {
     const values = ratings.map(r => r[field]).filter((v): v is number => v !== null)
-    return values.length > 0
-      ? values.reduce((sum, val) => sum + val, 0) / values.length
-      : null
+    return {
+      avg: values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length : null,
+      count: values.length
+    }
   }
 
-  const avgQuality = calculateAvg('quality')
-  const avgPrice = calculateAvg('price')
-  const avgReliability = calculateAvg('reliability')
-  const avgCommunication = calculateAvg('communication')
+  const qualityData = calculateAvgAndCount('quality')
+  const priceData = calculateAvgAndCount('price')
+  const reliabilityData = calculateAvgAndCount('reliability')
+  const communicationData = calculateAvgAndCount('communication')
 
   const handleShare = async () => {
     const url = `${window.location.origin}/supplier/${supplier.id}`
@@ -204,11 +205,14 @@ export function SupplierModal({
                             <span className="text-2xl">⭐</span> סיכום דירוגים
                           </h2>
                           <RatingDisplay
-                            quality={avgQuality}
-                            price={avgPrice}
-                            reliability={avgReliability}
-                            communication={avgCommunication}
-                            ratingCount={ratings.length}
+                            quality={qualityData.avg}
+                            price={priceData.avg}
+                            reliability={reliabilityData.avg}
+                            communication={communicationData.avg}
+                            qualityCount={qualityData.count}
+                            priceCount={priceData.count}
+                            reliabilityCount={reliabilityData.count}
+                            communicationCount={communicationData.count}
                           />
                         </div>
 

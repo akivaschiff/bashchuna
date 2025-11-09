@@ -3,7 +3,10 @@ type RatingDisplayProps = {
   price: number | null
   reliability: number | null
   communication: number | null
-  ratingCount?: number
+  qualityCount?: number
+  priceCount?: number
+  reliabilityCount?: number
+  communicationCount?: number
   compact?: boolean
 }
 
@@ -60,7 +63,10 @@ export function RatingDisplay({
   price,
   reliability,
   communication,
-  ratingCount = 0,
+  qualityCount = 0,
+  priceCount = 0,
+  reliabilityCount = 0,
+  communicationCount = 0,
   compact = false,
 }: RatingDisplayProps) {
   const hasAnyRating = quality !== null || price !== null || reliability !== null || communication !== null
@@ -75,10 +81,10 @@ export function RatingDisplay({
 
   return (
     <div className={compact ? 'space-y-1.5' : 'space-y-2.5'}>
-      <RatingItem label="איכות" value={quality} count={compact ? undefined : ratingCount} compact={compact} />
-      <RatingItem label="מחיר" value={price} count={compact ? undefined : ratingCount} compact={compact} />
-      <RatingItem label="אמינות" value={reliability} count={compact ? undefined : ratingCount} compact={compact} />
-      <RatingItem label="תקשורת" value={communication} count={compact ? undefined : ratingCount} compact={compact} />
+      <RatingItem label="איכות" value={quality} count={compact ? undefined : qualityCount} compact={compact} />
+      <RatingItem label="מחיר" value={price} count={compact ? undefined : priceCount} compact={compact} />
+      <RatingItem label="אמינות" value={reliability} count={compact ? undefined : reliabilityCount} compact={compact} />
+      <RatingItem label="תקשורת" value={communication} count={compact ? undefined : communicationCount} compact={compact} />
     </div>
   )
 }

@@ -61,7 +61,10 @@ export default async function AdminPage() {
     avg_price: null,
     avg_reliability: null,
     avg_communication: null,
-    rating_count: 0,
+    quality_count: 0,
+    price_count: 0,
+    reliability_count: 0,
+    communication_count: 0,
   }))
 
   return (
