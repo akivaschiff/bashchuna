@@ -52,6 +52,7 @@ export const TRADES = [
   'גנן',
   'רצף',
   'פרגולאי',
+  'מעצב',
   'אחר',
 ] as const
 

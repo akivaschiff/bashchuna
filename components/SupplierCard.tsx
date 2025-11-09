@@ -10,37 +10,50 @@ export function SupplierCard({ supplier, onClick }: SupplierCardProps) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all p-4 cursor-pointer active:scale-[0.98]"
+      className="card p-5 cursor-pointer active:scale-[0.99] group border border-neutral-200 hover:border-primary-200"
     >
       {supplier.image_url ? (
-        <img
-          src={supplier.image_url}
-          alt={supplier.name}
-          className="w-full h-48 object-cover rounded-lg mb-4"
-        />
+        <div className="relative overflow-hidden rounded-card mb-4">
+          <img
+            src={supplier.image_url}
+            alt={supplier.name}
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
       ) : (
-        <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-          <span className="text-gray-400 text-4xl">📋</span>
+        <div className="w-full h-48 bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-card mb-4 flex items-center justify-center border border-neutral-200">
+          <span className="text-neutral-400 text-5xl">📋</span>
         </div>
       )}
 
-      <h3 className="text-xl font-bold mb-1">{supplier.name}</h3>
-      <p className="text-gray-600 text-sm mb-3 font-medium">{supplier.trade}</p>
+      <div className="space-y-3">
+        <div>
+          <h3 className="text-xl font-bold text-neutral-900 mb-1.5 tracking-tight group-hover:text-primary-600 transition-colors duration-200">
+            {supplier.name}
+          </h3>
+          <p className="text-neutral-600 text-sm font-medium bg-neutral-50 inline-block px-3 py-1 rounded-full border border-neutral-200">
+            {supplier.trade}
+          </p>
+        </div>
 
-      <div className="mb-3">
-        <RatingDisplay
-          quality={supplier.avg_quality}
-          price={supplier.avg_price}
-          reliability={supplier.avg_reliability}
-          communication={supplier.avg_communication}
-          ratingCount={supplier.rating_count}
-          compact
-        />
+        <div className="pt-1">
+          <RatingDisplay
+            quality={supplier.avg_quality}
+            price={supplier.avg_price}
+            reliability={supplier.avg_reliability}
+            communication={supplier.avg_communication}
+            ratingCount={supplier.rating_count}
+            compact
+          />
+        </div>
+
+        <div className="pt-2 border-t border-neutral-100">
+          <p className="text-xs text-neutral-500 font-medium">
+            נוסף על ידי {supplier.creator.name}
+          </p>
+        </div>
       </div>
-
-      <p className="text-xs text-gray-500">
-        נוסף על ידי {supplier.creator.name}
-      </p>
     </div>
   )
 }

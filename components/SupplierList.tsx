@@ -104,19 +104,26 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
   return (
     <div>
       {/* Mobile-optimized search and filters */}
-      <div className="mb-6 space-y-3 sm:space-y-0 sm:flex sm:gap-3">
-        <input
-          type="text"
-          placeholder="חפש ספקים..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full sm:flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
+      <div className="mb-8 space-y-3 sm:space-y-0 sm:flex sm:gap-4">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            placeholder="חפש ספקים לפי שם..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="input-field pr-11"
+          />
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
 
         <select
           value={selectedTrade}
           onChange={(e) => setSelectedTrade(e.target.value)}
-          className="w-full sm:w-auto px-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full sm:w-auto px-4 py-3 border border-neutral-300 rounded-input text-base bg-white text-neutral-900 font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 cursor-pointer hover:border-neutral-400"
         >
           <option value="all">כל המקצועות</option>
           {TRADES.map((trade) => (
@@ -129,19 +136,25 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
         {userId && (
           <button
             onClick={() => setShowCreateModal(true)}
-            className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold whitespace-nowrap active:scale-[0.98] transition-transform"
+            className="btn-primary w-full sm:w-auto whitespace-nowrap active:scale-[0.98]"
           >
-            הוסף ספק
+            + הוסף ספק
           </button>
         )}
       </div>
 
       {filteredSuppliers.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          לא נמצאו ספקים. {userId && 'היה הראשון להוסיף!'}
+        <div className="text-center py-20">
+          <div className="bg-white rounded-card shadow-card border border-neutral-200 p-12 max-w-md mx-auto">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold text-neutral-900 mb-2">לא נמצאו ספקים</h3>
+            <p className="text-neutral-600">
+              {userId ? 'היה הראשון להוסיף ספק לרשימה!' : 'נסה לשנות את הסינון או החיפוש'}
+            </p>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {filteredSuppliers.map((supplier) => (
             <SupplierCard
               key={supplier.id}
@@ -213,6 +226,12 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
           onClose={() => {
             setShowEditModal(false)
             setCachedSupplierForModal(null)
+          }}
+          onSuccess={() => {
+            // Re-fetch the supplier data to update the modal
+            if (cachedSupplierForModal) {
+              handleSupplierClick(cachedSupplierForModal)
+            }
           }}
         />
       )}

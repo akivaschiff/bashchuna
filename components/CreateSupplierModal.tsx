@@ -71,28 +71,32 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-2xl font-bold mb-4">הוסף ספק חדש</h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+      <div className="bg-white rounded-card max-w-md w-full p-6 sm:p-8 shadow-modal max-h-[90vh] overflow-y-auto">
+        <div className="mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight mb-2">הוסף ספק חדש</h2>
+          <p className="text-neutral-600 text-sm">הוסף את הפרטים של הספק המומלץ שלך</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-1">שם</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">שם הספק</label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-3 py-2 border rounded-md"
+              className="input-field"
+              placeholder="לדוגמה: דוד כהן"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">מקצוע</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">מקצוע</label>
             <select
               value={formData.trade}
               onChange={(e) => setFormData({ ...formData, trade: e.target.value })}
-              className="w-full px-3 py-2 border rounded-md"
+              className="input-field cursor-pointer"
             >
               {TRADES.map((trade) => (
                 <option key={trade} value={trade}>
@@ -103,44 +107,47 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">טלפון</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">טלפון</label>
             <input
               type="tel"
               required
               pattern="05[0-9]{8}"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-3 py-2 border rounded-md"
+              className="input-field"
               placeholder="05XXXXXXXX"
             />
-            <p className="text-xs text-gray-500 mt-1">פורמט: 05 ואחריו 8 ספרות</p>
+            <p className="text-xs text-neutral-500 mt-1.5 mr-1">פורמט: 05 ואחריו 8 ספרות</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">תיאור</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">תיאור</label>
             <textarea
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 border rounded-md h-24"
+              className="input-field h-28 resize-none"
+              placeholder="ספר לנו על הניסיון שלך עם הספק..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">תמונה (אופציונלי)</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">
+              תמונה <span className="text-neutral-400 font-normal">(אופציונלי)</span>
+            </label>
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-              className="w-full"
+              className="w-full text-sm text-neutral-600 file:mr-4 file:py-2 file:px-4 file:rounded-input file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 file:cursor-pointer cursor-pointer"
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-4 border-t border-neutral-200">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="btn-primary flex-1"
             >
               {loading ? 'יוצר...' : 'צור ספק'}
             </button>
@@ -148,7 +155,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="flex-1 bg-gray-200 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50"
+              className="btn-secondary flex-1"
             >
               ביטול
             </button>

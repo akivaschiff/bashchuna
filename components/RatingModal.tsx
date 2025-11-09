@@ -27,30 +27,36 @@ function StarInput({
   onChange: (value: number | null) => void
 }) {
   return (
-    <div>
-      <label className="block text-sm font-medium mb-2">{label} (אופציונלי)</label>
-      <div className="flex gap-2">
+    <div className="bg-neutral-50 rounded-lg p-4 border border-neutral-200">
+      <label className="block text-sm font-semibold text-neutral-700 mb-3">
+        {label} <span className="text-neutral-400 font-normal">(אופציונלי)</span>
+      </label>
+      <div className="flex gap-2 items-center">
         <button
           type="button"
           onClick={() => onChange(null)}
-          className={`px-3 py-1 text-sm rounded ${
-            value === null ? 'bg-gray-300' : 'bg-gray-100 hover:bg-gray-200'
+          className={`px-3 py-1.5 text-sm rounded-input font-medium transition-all duration-200 ${
+            value === null
+              ? 'bg-neutral-900 text-white'
+              : 'bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-300'
           }`}
         >
           ללא
         </button>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            type="button"
-            onClick={() => onChange(star)}
-            className={`text-2xl ${
-              value !== null && star <= value ? 'text-yellow-400' : 'text-gray-300'
-            } hover:scale-110 transition-transform`}
-          >
-            ★
-          </button>
-        ))}
+        <div className="flex-1 flex justify-center gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              onClick={() => onChange(star)}
+              className={`text-3xl transition-all duration-200 hover:scale-110 ${
+                value !== null && star <= value ? 'star-rating' : 'star-empty hover:text-neutral-400'
+              }`}
+            >
+              ★
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -106,11 +112,14 @@ export function RatingModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4">
-          {existingRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
-        </h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+      <div className="bg-white rounded-card max-w-md w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-modal">
+        <div className="mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight mb-2">
+            {existingRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
+          </h2>
+          <p className="text-neutral-600 text-sm">דרג את הספק בכל אחד מהקריטריונים</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <StarInput
@@ -137,23 +146,23 @@ export function RatingModal({
             onChange={(value) => setFormData({ ...formData, communication: value })}
           />
 
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              הערה (אופציונלי)
+          <div className="pt-2">
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">
+              הערה <span className="text-neutral-400 font-normal">(אופציונלי)</span>
             </label>
             <textarea
               value={formData.comment || ''}
               onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-              className="w-full px-3 py-2 border rounded-md h-24"
+              className="input-field h-28 resize-none"
               placeholder="שתף את החוויה שלך..."
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-6 border-t border-neutral-200">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="btn-primary flex-1"
             >
               {loading ? 'שומר...' : existingRating ? 'עדכן דירוג' : 'שלח דירוג'}
             </button>
@@ -161,7 +170,7 @@ export function RatingModal({
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="flex-1 bg-gray-200 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50"
+              className="btn-secondary flex-1"
             >
               ביטול
             </button>

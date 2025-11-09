@@ -1,9 +1,14 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Rubik } from 'next/font/google'
 import './globals.css'
 import { Header } from '@/components/Header'
 
-const inter = Inter({ subsets: ['latin'] })
+const rubik = Rubik({
+  subsets: ['hebrew', 'latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-rubik',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'בשכונה - המלצות על ספקים בגבעות עדן',
@@ -23,10 +28,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="he" dir="rtl">
-      <body className={`${inter.className} bg-gray-50 min-h-screen`}>
+    <html lang="he" dir="rtl" className={rubik.variable}>
+      <body className="font-sans bg-neutral-50 min-h-screen">
         <Header />
-        <main className="min-h-[calc(100vh-64px)]">{children}</main>
+        <main className="min-h-[calc(100vh-72px)]">{children}</main>
       </body>
     </html>
   )

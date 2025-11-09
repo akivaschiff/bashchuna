@@ -96,64 +96,79 @@ export function SupplierModal({
                   <Dialog.Panel className="pointer-events-auto w-screen max-w-full sm:max-w-2xl">
                     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                       {/* Header with close button */}
-                      <div className="sticky top-0 z-10 bg-white border-b px-4 sm:px-6 py-4 flex items-center justify-between">
-                        <Dialog.Title className="text-lg font-semibold text-gray-900">
+                      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-neutral-200 px-4 sm:px-6 py-5 flex items-center justify-between shadow-sm">
+                        <Dialog.Title className="text-xl font-bold text-neutral-900 tracking-tight">
                           פרטי ספק
                         </Dialog.Title>
                         <button
                           type="button"
-                          className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="rounded-lg p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200"
                           onClick={onClose}
                         >
                           <span className="sr-only">סגור</span>
-                          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
                       </div>
 
                       {/* Content */}
-                      <div className="relative flex-1 px-4 sm:px-6 py-6">
+                      <div className="relative flex-1 px-4 sm:px-6 py-6 sm:py-8">
                         {/* Supplier Image and Basic Info */}
-                        <div className="mb-6">
+                        <div className="mb-8">
                           {supplier.image_url ? (
-                            <img
-                              src={supplier.image_url}
-                              alt={supplier.name}
-                              className="w-full h-64 object-cover rounded-lg mb-4"
-                            />
+                            <div className="relative overflow-hidden rounded-card mb-6">
+                              <img
+                                src={supplier.image_url}
+                                alt={supplier.name}
+                                className="w-full h-72 object-cover"
+                              />
+                            </div>
                           ) : (
-                            <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-                              <span className="text-gray-400 text-6xl">📋</span>
+                            <div className="w-full h-72 bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-card flex items-center justify-center mb-6 border border-neutral-200">
+                              <span className="text-neutral-400 text-7xl">📋</span>
                             </div>
                           )}
 
-                          <h1 className="text-3xl font-bold mb-2">{supplier.name}</h1>
-                          <p className="text-xl text-gray-600 mb-4">{supplier.trade}</p>
+                          <div className="space-y-4">
+                            <div>
+                              <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 tracking-tight mb-3">{supplier.name}</h1>
+                              <span className="inline-block bg-primary-50 text-primary-700 px-4 py-2 rounded-full font-semibold text-base border border-primary-200">
+                                {supplier.trade}
+                              </span>
+                            </div>
 
-                          {/* WhatsApp Button - Mobile Optimized */}
-                          <a
-                            href={`https://wa.me/972${supplier.phone.replace(/^0/, '').replace(/[^0-9]/g, '')}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block w-full sm:inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-center mb-4"
-                          >
-                            📱 וואטסאפ: {supplier.phone}
-                          </a>
+                            {/* WhatsApp Button - Mobile Optimized */}
+                            <a
+                              href={`https://wa.me/972${supplier.phone.replace(/^0/, '').replace(/[^0-9]/g, '')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block w-full sm:inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-green-600 text-white rounded-input hover:bg-green-700 active:bg-green-800 font-semibold text-center transition-all duration-200 shadow-sm hover:shadow-md"
+                            >
+                              <span className="text-xl">📱</span> וואטסאפ: {supplier.phone}
+                            </a>
 
-                          <p className="text-gray-700 mb-4 leading-relaxed">{supplier.description}</p>
+                            <p className="text-neutral-700 text-base leading-relaxed bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+                              {supplier.description}
+                            </p>
 
-                          <p className="text-sm text-gray-500">
-                            נוסף על ידי {supplier.creator.name} בתאריך {formatDate(supplier.created_at)}
-                          </p>
+                            <div className="flex items-center gap-2 text-sm text-neutral-500 pt-2 border-t border-neutral-100">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                              </svg>
+                              <span className="font-medium">נוסף על ידי {supplier.creator.name}</span>
+                              <span className="text-neutral-400">•</span>
+                              <span>{formatDate(supplier.created_at)}</span>
+                            </div>
+                          </div>
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="mb-6 flex flex-col sm:flex-row gap-3">
+                        <div className="mb-8 flex flex-col sm:flex-row gap-3">
                           {isCreator && (
                             <button
                               onClick={onOpenEdit}
-                              className="w-full sm:flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
+                              className="w-full sm:flex-1 px-6 py-3 bg-accent-600 text-white rounded-input hover:bg-accent-700 active:bg-accent-800 font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
                             >
                               ערוך ספק
                             </button>
@@ -162,7 +177,7 @@ export function SupplierModal({
                           {userId && (
                             <button
                               onClick={onOpenRating}
-                              className="w-full sm:flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
+                              className="btn-primary w-full sm:flex-1"
                             >
                               {userRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
                             </button>
@@ -170,15 +185,17 @@ export function SupplierModal({
 
                           <button
                             onClick={handleShare}
-                            className="w-full sm:flex-1 px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold"
+                            className="btn-secondary w-full sm:flex-1"
                           >
-                            {copied ? 'הקישור הועתק!' : 'שתף'}
+                            {copied ? '✓ הקישור הועתק!' : 'שתף'}
                           </button>
                         </div>
 
                         {/* Ratings Summary */}
-                        <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                          <h2 className="text-2xl font-bold mb-4">סיכום דירוגים</h2>
+                        <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-card p-6 sm:p-8 mb-6 border border-primary-200">
+                          <h2 className="text-2xl font-bold text-neutral-900 tracking-tight mb-5 flex items-center gap-2">
+                            <span className="text-2xl">⭐</span> סיכום דירוגים
+                          </h2>
                           <RatingDisplay
                             quality={avgQuality}
                             price={avgPrice}
@@ -189,50 +206,67 @@ export function SupplierModal({
                         </div>
 
                         {/* Reviews */}
-                        <div className="bg-gray-50 rounded-lg p-6">
-                          <h2 className="text-2xl font-bold mb-4">
-                            ביקורות ({ratings.length})
+                        <div className="bg-neutral-50 rounded-card p-6 sm:p-8 border border-neutral-200">
+                          <h2 className="text-2xl font-bold text-neutral-900 tracking-tight mb-6 flex items-center gap-2">
+                            <span className="text-2xl">💬</span> ביקורות ({ratings.length})
                           </h2>
 
                           {ratings.length === 0 ? (
-                            <p className="text-gray-500">אין ביקורות עדיין. היה הראשון לדרג!</p>
+                            <div className="text-center py-8">
+                              <div className="text-5xl mb-3">📝</div>
+                              <p className="text-neutral-600 font-medium">אין ביקורות עדיין. היה הראשון לדרג!</p>
+                            </div>
                           ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-5">
                               {ratings.map((rating) => (
-                                <div key={rating.id} className="border-b border-gray-200 pb-4 last:border-b-0">
-                                  <div className="flex items-center gap-3 mb-2">
+                                <div key={rating.id} className="bg-white rounded-lg p-5 border border-neutral-200 last:mb-0 shadow-sm">
+                                  <div className="flex items-center gap-3 mb-3">
                                     {rating.user.avatar_url && (
                                       <img
                                         src={rating.user.avatar_url}
                                         alt={rating.user.name}
-                                        className="w-10 h-10 rounded-full"
+                                        className="w-11 h-11 rounded-full ring-2 ring-neutral-200"
                                       />
                                     )}
-                                    <div>
-                                      <p className="font-semibold">{rating.user.name}</p>
-                                      <p className="text-sm text-gray-500">
+                                    <div className="flex-1">
+                                      <p className="font-semibold text-neutral-900">{rating.user.name}</p>
+                                      <p className="text-sm text-neutral-500">
                                         {formatDate(rating.created_at)}
                                       </p>
                                     </div>
                                   </div>
 
-                                  <div className="mb-2 text-sm">
+                                  <div className="flex flex-wrap gap-3 mb-3 text-sm">
                                     {rating.quality !== null && (
-                                      <span className="ml-4">איכות: {rating.quality}★</span>
+                                      <span className="inline-flex items-center gap-1 bg-neutral-50 px-3 py-1 rounded-full border border-neutral-200">
+                                        <span className="font-medium text-neutral-700">איכות:</span>
+                                        <span className="star-rating font-bold">{rating.quality}★</span>
+                                      </span>
                                     )}
                                     {rating.price !== null && (
-                                      <span className="ml-4">מחיר: {rating.price}★</span>
+                                      <span className="inline-flex items-center gap-1 bg-neutral-50 px-3 py-1 rounded-full border border-neutral-200">
+                                        <span className="font-medium text-neutral-700">מחיר:</span>
+                                        <span className="star-rating font-bold">{rating.price}★</span>
+                                      </span>
                                     )}
                                     {rating.reliability !== null && (
-                                      <span className="ml-4">אמינות: {rating.reliability}★</span>
+                                      <span className="inline-flex items-center gap-1 bg-neutral-50 px-3 py-1 rounded-full border border-neutral-200">
+                                        <span className="font-medium text-neutral-700">אמינות:</span>
+                                        <span className="star-rating font-bold">{rating.reliability}★</span>
+                                      </span>
                                     )}
                                     {rating.communication !== null && (
-                                      <span className="ml-4">תקשורת: {rating.communication}★</span>
+                                      <span className="inline-flex items-center gap-1 bg-neutral-50 px-3 py-1 rounded-full border border-neutral-200">
+                                        <span className="font-medium text-neutral-700">תקשורת:</span>
+                                        <span className="star-rating font-bold">{rating.communication}★</span>
+                                      </span>
                                     )}
                                   </div>
 
                                   {rating.comment && (
-                                    <p className="text-gray-700">{rating.comment}</p>
+                                    <p className="text-neutral-700 leading-relaxed bg-neutral-50 p-3 rounded-lg border border-neutral-200">
+                                      {rating.comment}
+                                    </p>
                                   )}
                                 </div>
                               ))}

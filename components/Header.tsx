@@ -17,17 +17,21 @@ export async function Header() {
   }
 
   return (
-    <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
-          <img src="/icon.png" alt="בשכונה" className="h-8 w-8 sm:h-10 sm:w-10" />
-          <span className="text-xl sm:text-2xl font-bold text-blue-600">המומלצים שלנו</span>
+    <header className="border-b border-neutral-200 bg-white sticky top-0 z-50 shadow-header backdrop-blur-sm bg-white/95">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-90 transition-all duration-200 group">
+          <img
+            src="/icon.png"
+            alt="בשכונה"
+            className="h-9 w-9 sm:h-11 sm:w-11 rounded-lg shadow-sm group-hover:shadow-md transition-shadow duration-200"
+          />
+          <span className="text-xl sm:text-2xl font-bold text-primary-600 tracking-tight">המומלצים שלנו</span>
         </Link>
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-5">
           {isAdmin && (
             <Link
               href="/admin"
-              className="text-sm sm:text-base text-gray-600 hover:text-gray-900 font-medium"
+              className="text-sm sm:text-base text-neutral-600 hover:text-primary-600 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-primary-600 after:transition-all after:duration-200"
             >
               ניהול
             </Link>

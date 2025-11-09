@@ -22,20 +22,20 @@ export function AuthButton({ user }: { user: User | null }) {
 
   if (user) {
     return (
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
         {user.user_metadata.avatar_url && (
           <img
             src={user.user_metadata.avatar_url}
             alt={user.user_metadata.full_name || user.email}
-            className="w-8 h-8 rounded-full"
+            className="w-9 h-9 rounded-full ring-2 ring-neutral-200 shadow-sm"
           />
         )}
-        <span className="hidden sm:inline text-sm">
+        <span className="hidden sm:inline text-sm font-medium text-neutral-700 max-w-[120px] truncate">
           {user.user_metadata.full_name || user.email}
         </span>
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
+          className="px-4 py-2 text-sm font-medium bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900 rounded-input transition-all duration-200 border border-neutral-200 hover:border-neutral-300"
         >
           התנתק
         </button>
@@ -46,7 +46,7 @@ export function AuthButton({ user }: { user: User | null }) {
   return (
     <button
       onClick={handleSignIn}
-      className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+      className="px-5 py-2.5 text-sm font-semibold bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-input transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
     >
       התחבר עם Google
     </button>
