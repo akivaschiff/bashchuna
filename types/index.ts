@@ -43,7 +43,7 @@ export type RatingWithUser = Rating & {
 }
 
 export const TRADES = [
-  'שרברות',
+  'שרברבות',
   'חשמל',
   'קבלנות',
   'ניקיון',

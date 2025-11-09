@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { TRADES } from '@/types'
 import { useRouter } from 'next/navigation'
+import { PhoneInput } from './PhoneInput'
 
 type CreateSupplierModalProps = {
   userId: string
@@ -147,16 +148,11 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
 
           <div>
             <label className="block text-sm font-semibold text-neutral-700 mb-2">טלפון</label>
-            <input
-              type="tel"
-              required
-              pattern="05[0-9]{8}"
+            <PhoneInput
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="input-field"
-              placeholder="05XXXXXXXX"
+              onChange={(phone) => setFormData({ ...formData, phone })}
+              required
             />
-            <p className="text-xs text-neutral-500 mt-1.5 mr-1">פורמט: 05 ואחריו 8 ספרות</p>
           </div>
 
           <div>
