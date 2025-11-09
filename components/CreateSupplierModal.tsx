@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { TRADES } from '@/types'
 import { useRouter } from 'next/navigation'
@@ -15,11 +15,32 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
-    trade: 'שרברב',
+    trades: [] as string[],
     phone: '',
     description: '',
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
+
+  const handleTradeToggle = (trade: string) => {
+    setFormData(prev => ({
+      ...prev,
+      trades: prev.trades.includes(trade)
+        ? prev.trades.filter(t => t !== trade)
+        : [...prev.trades, trade]
+    }))
+  }
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !loading) {
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [loading, onClose])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,12 +67,19 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
         imageUrl = publicUrl
       }
 
+      // Validate at least one trade is selected
+      if (formData.trades.length === 0) {
+        alert('אנא בחר לפחות מקצוע אחד')
+        setLoading(false)
+        return
+      }
+
       // Create supplier
       const { error: insertError } = await supabase
         .from('suppliers')
         .insert({
           name: formData.name,
-          trade: formData.trade,
+          trades: formData.trades,
           phone: formData.phone,
           description: formData.description,
           image_url: imageUrl,
@@ -64,7 +92,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
       onClose()
     } catch (error) {
       console.error('Error creating supplier:', error)
-      alert('שגיאה ביצירת ספק. נסה שוב.')
+      alert('שגיאה ביצירת המלצה. נסה שוב.')
     } finally {
       setLoading(false)
     }
@@ -74,13 +102,12 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
       <div className="bg-white rounded-card max-w-md w-full p-6 sm:p-8 shadow-modal max-h-[90vh] overflow-y-auto">
         <div className="mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight mb-2">הוסף ספק חדש</h2>
-          <p className="text-neutral-600 text-sm">הוסף את הפרטים של הספק המומלץ שלך</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight mb-2">יצירת המלצה חדשה</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-neutral-700 mb-2">שם הספק</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">שם</label>
             <input
               type="text"
               required
@@ -92,18 +119,30 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-neutral-700 mb-2">מקצוע</label>
-            <select
-              value={formData.trade}
-              onChange={(e) => setFormData({ ...formData, trade: e.target.value })}
-              className="input-field cursor-pointer"
-            >
-              {TRADES.map((trade) => (
-                <option key={trade} value={trade}>
-                  {trade}
-                </option>
-              ))}
-            </select>
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">מקצועות</label>
+            <div className="bg-neutral-50 border border-neutral-300 rounded-input p-4 max-h-60 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-3">
+                {TRADES.map((trade) => (
+                  <label
+                    key={trade}
+                    className="flex items-center gap-2 cursor-pointer hover:bg-white p-2 rounded transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.trades.includes(trade)}
+                      onChange={() => handleTradeToggle(trade)}
+                      className="w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-2 focus:ring-primary-500 cursor-pointer"
+                    />
+                    <span className="text-sm text-neutral-700">{trade}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {formData.trades.length > 0 && (
+              <p className="text-xs text-neutral-600 mt-2">
+                נבחרו: {formData.trades.join(', ')}
+              </p>
+            )}
           </div>
 
           <div>
@@ -127,7 +166,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="input-field h-28 resize-none"
-              placeholder="ספר לנו על הניסיון שלך עם הספק..."
+              placeholder="שתפו אותנו בחוויה..."
             />
           </div>
 
@@ -149,7 +188,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
               disabled={loading}
               className="btn-primary flex-1"
             >
-              {loading ? 'יוצר...' : 'צור ספק'}
+              {loading ? 'שומר...' : 'יצירת המלצה'}
             </button>
             <button
               type="button"

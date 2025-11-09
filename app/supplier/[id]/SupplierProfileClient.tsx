@@ -41,7 +41,7 @@ export function SupplierProfileClient({
           onClick={() => setShowEditModal(true)}
           className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
         >
-          ערוך ספק
+          ערוך המלצה
         </button>
       )}
 

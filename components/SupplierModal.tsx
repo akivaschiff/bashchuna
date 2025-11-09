@@ -98,7 +98,7 @@ export function SupplierModal({
                       {/* Header with close button */}
                       <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-neutral-200 px-4 sm:px-6 py-5 flex items-center justify-between shadow-sm">
                         <Dialog.Title className="text-xl font-bold text-neutral-900 tracking-tight">
-                          פרטי ספק
+                          פרטי המלצה
                         </Dialog.Title>
                         <button
                           type="button"
@@ -133,9 +133,16 @@ export function SupplierModal({
                           <div className="space-y-4">
                             <div>
                               <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 tracking-tight mb-3">{supplier.name}</h1>
-                              <span className="inline-block bg-primary-50 text-primary-700 px-4 py-2 rounded-full font-semibold text-base border border-primary-200">
-                                {supplier.trade}
-                              </span>
+                              <div className="flex flex-wrap gap-2">
+                                {supplier.trades.map((trade) => (
+                                  <span
+                                    key={trade}
+                                    className="inline-block bg-primary-50 text-primary-700 px-4 py-2 rounded-full font-semibold text-sm border border-primary-200"
+                                  >
+                                    {trade}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
 
                             {/* WhatsApp Button - Mobile Optimized */}
@@ -170,7 +177,7 @@ export function SupplierModal({
                               onClick={onOpenEdit}
                               className="w-full sm:flex-1 px-6 py-3 bg-accent-600 text-white rounded-input hover:bg-accent-700 active:bg-accent-800 font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
                             >
-                              ערוך ספק
+                              ערוך המלצה
                             </button>
                           )}
 
@@ -179,7 +186,7 @@ export function SupplierModal({
                               onClick={onOpenRating}
                               className="btn-primary w-full sm:flex-1"
                             >
-                              {userRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
+                              {userRating ? 'עדכון הדירוג' : 'דירוג'}
                             </button>
                           )}
 
@@ -214,7 +221,7 @@ export function SupplierModal({
                           {ratings.length === 0 ? (
                             <div className="text-center py-8">
                               <div className="text-5xl mb-3">📝</div>
-                              <p className="text-neutral-600 font-medium">אין ביקורות עדיין. היה הראשון לדרג!</p>
+                              <p className="text-neutral-600 font-medium">אין ביקורות עדיין. אפשר להיות הראשונים לדרג!</p>
                             </div>
                           ) : (
                             <div className="space-y-5">

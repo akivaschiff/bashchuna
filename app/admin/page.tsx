@@ -50,7 +50,7 @@ export default async function AdminPage() {
   const recentSuppliers: SupplierWithCreator[] = (suppliers || []).map((supplier) => ({
     id: supplier.id,
     name: supplier.name,
-    trade: supplier.trade,
+    trades: supplier.trades || [],
     phone: supplier.phone,
     description: supplier.description,
     image_url: supplier.image_url,

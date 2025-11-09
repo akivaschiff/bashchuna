@@ -78,6 +78,44 @@ export function RatingModal({
     comment: existingRating?.comment ?? '',
   })
 
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !loading) {
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [loading, onClose])
+
+  const handleDelete = async () => {
+    if (!confirm('האם למחוק את הדירוג? פעולה זו לא ניתנת לביטול.')) {
+      return
+    }
+
+    setLoading(true)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase
+        .from('ratings')
+        .delete()
+        .eq('supplier_id', supplierId)
+        .eq('user_id', userId)
+
+      if (error) throw error
+
+      router.refresh()
+      onClose()
+    } catch (error) {
+      console.error('Error deleting rating:', error)
+      alert('שגיאה במחיקת הדירוג. נסה שוב.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -116,9 +154,9 @@ export function RatingModal({
       <div className="bg-white rounded-card max-w-md w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-modal">
         <div className="mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight mb-2">
-            {existingRating ? 'עדכן את הדירוג שלך' : 'דרג את הספק'}
+            {existingRating ? 'עדכון הדירוג' : 'דירוג'}
           </h2>
-          <p className="text-neutral-600 text-sm">דרג את הספק בכל אחד מהקריטריונים</p>
+          <p className="text-neutral-600 text-sm">דירוג לפי קריטריונים</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -154,7 +192,7 @@ export function RatingModal({
               value={formData.comment || ''}
               onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
               className="input-field h-28 resize-none"
-              placeholder="שתף את החוויה שלך..."
+              placeholder="שתפו אותנו בחוויה..."
             />
           </div>
 
@@ -164,7 +202,7 @@ export function RatingModal({
               disabled={loading}
               className="btn-primary flex-1"
             >
-              {loading ? 'שומר...' : existingRating ? 'עדכן דירוג' : 'שלח דירוג'}
+              {loading ? 'שומר...' : existingRating ? 'עדכון דירוג' : 'שליחת דירוג'}
             </button>
             <button
               type="button"
@@ -176,6 +214,21 @@ export function RatingModal({
             </button>
           </div>
         </form>
+
+        {/* Delete button - only show if editing existing rating */}
+        {existingRating && (
+          <div className="mt-6 pt-6 border-t border-neutral-200">
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={loading}
+              className="w-full px-4 py-2.5 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-input hover:bg-red-100 hover:border-red-300 active:bg-red-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'מוחק...' : 'מחיקת דירוג'}
+            </button>
+            <p className="text-xs text-neutral-500 text-center mt-2">פעולה זו תמחק את הדירוג לצמיתות</p>
+          </div>
+        )}
       </div>
     </div>
   )

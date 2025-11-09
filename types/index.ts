@@ -9,7 +9,7 @@ export type User = {
 export type Supplier = {
   id: string
   name: string
-  trade: string
+  trades: string[]
   phone: string
   description: string
   image_url: string | null
@@ -43,16 +43,16 @@ export type RatingWithUser = Rating & {
 }
 
 export const TRADES = [
-  'שרברב',
-  'חשמלאי',
-  'קבלן',
-  'מנקה',
-  'צבע',
-  'נגר',
-  'גנן',
-  'רצף',
-  'פרגולאי',
-  'מעצב',
+  'שרברות',
+  'חשמל',
+  'קבלנות',
+  'ניקיון',
+  'צביעה',
+  'נגרות',
+  'גינון',
+  'ריצוף',
+  'פרגולות',
+  'עיצוב פנים',
   'אחר',
 ] as const
 

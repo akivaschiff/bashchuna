@@ -32,9 +32,16 @@ export function SupplierCard({ supplier, onClick }: SupplierCardProps) {
           <h3 className="text-xl font-bold text-neutral-900 mb-1.5 tracking-tight group-hover:text-primary-600 transition-colors duration-200">
             {supplier.name}
           </h3>
-          <p className="text-neutral-600 text-sm font-medium bg-neutral-50 inline-block px-3 py-1 rounded-full border border-neutral-200">
-            {supplier.trade}
-          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {supplier.trades.map((trade) => (
+              <span
+                key={trade}
+                className="text-neutral-600 text-xs font-medium bg-neutral-50 px-2.5 py-1 rounded-full border border-neutral-200"
+              >
+                {trade}
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="pt-1">

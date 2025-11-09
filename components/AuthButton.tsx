@@ -48,7 +48,7 @@ export function AuthButton({ user }: { user: User | null }) {
       onClick={handleSignIn}
       className="px-5 py-2.5 text-sm font-semibold bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-input transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
     >
-      התחבר עם Google
+      התחברות
     </button>
   )
 }

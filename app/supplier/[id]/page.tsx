@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { data: supplier } = await supabase
     .from('suppliers')
-    .select('name, trade, description, image_url')
+    .select('name, trades, description, image_url')
     .eq('id', id)
     .single()
 
@@ -27,19 +27,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const description = supplier.description.slice(0, 160) + (supplier.description.length > 160 ? '...' : '')
+  const tradesString = supplier.trades.join(', ')
 
   return {
-    title: `${supplier.name} - ${supplier.trade} | בשכונה`,
+    title: `${supplier.name} - ${tradesString} | בשכונה`,
     description: description,
     openGraph: {
-      title: `${supplier.name} - ${supplier.trade}`,
+      title: `${supplier.name} - ${tradesString}`,
       description: description,
       images: supplier.image_url ? [
         {
           url: supplier.image_url,
           width: 1200,
           height: 630,
-          alt: `${supplier.name} - ${supplier.trade}`,
+          alt: `${supplier.name} - ${tradesString}`,
         }
       ] : [],
       type: 'website',
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${supplier.name} - ${supplier.trade}`,
+      title: `${supplier.name} - ${tradesString}`,
       description: description,
       images: supplier.image_url ? [supplier.image_url] : [],
     },
@@ -132,7 +133,16 @@ export default async function SupplierProfilePage({ params }: Props) {
 
           <div className="flex-1">
             <h1 className="text-3xl font-bold mb-2">{supplier.name}</h1>
-            <p className="text-xl text-gray-600 mb-4">{supplier.trade}</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {supplier.trades.map((trade: string) => (
+                <span
+                  key={trade}
+                  className="inline-block bg-primary-50 text-primary-700 px-3 py-1.5 rounded-full font-semibold text-sm border border-primary-200"
+                >
+                  {trade}
+                </span>
+              ))}
+            </div>
 
             <div className="mb-4">
               <a

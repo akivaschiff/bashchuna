@@ -41,7 +41,7 @@ export default async function Home() {
     return {
       id: supplier.id,
       name: supplier.name,
-      trade: supplier.trade,
+      trades: supplier.trades || [],
       phone: supplier.phone,
       description: supplier.description,
       image_url: supplier.image_url,

@@ -67,7 +67,16 @@ export function AdminClient({ suppliers }: { suppliers: SupplierWithCreator[] })
 
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{supplier.name}</h3>
-            <p className="text-gray-600 text-sm">{supplier.trade}</p>
+            <div className="flex flex-wrap gap-1.5 mt-1">
+              {supplier.trades.map((trade) => (
+                <span
+                  key={trade}
+                  className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full"
+                >
+                  {trade}
+                </span>
+              ))}
+            </div>
             <p className="text-gray-500 text-sm mt-1">
               נוסף על ידי {supplier.creator.name}
             </p>

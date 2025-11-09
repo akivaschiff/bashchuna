@@ -52,12 +52,12 @@ export function WelcomeModal({ isOpen, onClose, onSignIn }: WelcomeModalProps) {
                   as="h3"
                   className="text-3xl font-bold text-neutral-900 mb-3 tracking-tight"
                 >
-                  ברוכים הבאים לבשכונה! 🏘️
+                  ההמלצות שלנו! 🏘️
                 </Dialog.Title>
 
                 <div className="mt-5 space-y-5 text-neutral-700 leading-relaxed">
                   <p className="text-lg font-medium text-neutral-800">
-                    פלטפורמה לשיתוף המלצות על ספקים ובעלי מקצוע בגבעות עדן
+                    פלטפורמה לשיתוף המלצות על שירותים בגבעות עדן
                   </p>
 
                   <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-lg p-5 space-y-3 border border-primary-200">
@@ -67,7 +67,7 @@ export function WelcomeModal({ isOpen, onClose, onSignIn }: WelcomeModalProps) {
                     <ul className="space-y-2 text-sm text-neutral-700">
                       <li className="flex items-start gap-2">
                         <span className="text-primary-600 font-bold mt-0.5">✓</span>
-                        <span>המלצות אמיתיות משכנים</span>
+                        <span>המלצות אמיתיות מהשכנות והשכנים</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary-600 font-bold mt-0.5">✓</span>
@@ -91,19 +91,19 @@ export function WelcomeModal({ isOpen, onClose, onSignIn }: WelcomeModalProps) {
                     <ul className="space-y-2 text-sm text-neutral-700">
                       <li className="flex items-start gap-2">
                         <span className="text-accent-600 font-bold mt-0.5">✓</span>
-                        <span>להוסיף ספקים חדשים</span>
+                        <span>להוסיף המלצות חדשות</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-accent-600 font-bold mt-0.5">✓</span>
-                        <span>לדרג ולהמליץ על ספקים</span>
+                        <span>לדרג ולהמליץ</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-accent-600 font-bold mt-0.5">✓</span>
-                        <span>לערוך את ההמלצות שלך</span>
+                        <span>לערוך את ההמלצות</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-accent-600 font-bold mt-0.5">✓</span>
-                        <span>לעזור לשכנים למצוא שירות איכותי</span>
+                        <span>לעזור לשכנות ולשכנים למצוא שירות איכותי</span>
                       </li>
                     </ul>
                   </div>
@@ -118,7 +118,7 @@ export function WelcomeModal({ isOpen, onClose, onSignIn }: WelcomeModalProps) {
                     onClick={onSignIn}
                     className="btn-primary w-full"
                   >
-                    התחבר עם Google
+                    התחברות
                   </button>
                   <button
                     onClick={onClose}

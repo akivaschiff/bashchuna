@@ -55,7 +55,7 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
 
   const filteredSuppliers = suppliers.filter((supplier) => {
     const matchesSearch = supplier.name.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesTrade = selectedTrade === 'all' || supplier.trade === selectedTrade
+    const matchesTrade = selectedTrade === 'all' || supplier.trades.includes(selectedTrade)
     return matchesSearch && matchesTrade
   })
 
@@ -108,7 +108,7 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
         <div className="relative flex-1">
           <input
             type="text"
-            placeholder="חפש ספקים לפי שם..."
+            placeholder="חיפוש לפי שם..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="input-field pr-11"
@@ -138,7 +138,7 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
             onClick={() => setShowCreateModal(true)}
             className="btn-primary w-full sm:w-auto whitespace-nowrap active:scale-[0.98]"
           >
-            + הוסף ספק
+            + הוסף המלצה
           </button>
         )}
       </div>
@@ -147,9 +147,9 @@ export function SupplierList({ suppliers, userId }: SupplierListProps) {
         <div className="text-center py-20">
           <div className="bg-white rounded-card shadow-card border border-neutral-200 p-12 max-w-md mx-auto">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-neutral-900 mb-2">לא נמצאו ספקים</h3>
+            <h3 className="text-xl font-semibold text-neutral-900 mb-2">לא נמצאו המלצות</h3>
             <p className="text-neutral-600">
-              {userId ? 'היה הראשון להוסיף ספק לרשימה!' : 'נסה לשנות את הסינון או החיפוש'}
+              {userId ? 'אפשר להיות הראשונים להמליץ!' : 'נסו לשנות את הסינון או החיפוש'}
             </p>
           </div>
         </div>
