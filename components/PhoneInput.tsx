@@ -132,6 +132,8 @@ export function PhoneInput({
           placeholder={placeholder}
           pattern="05[0-9]{8}"
           title="פורמט: 05 ואחריו 8 ספרות"
+          autoComplete="tel"
+          name="phone"
         />
 
         {supportsContacts && (
