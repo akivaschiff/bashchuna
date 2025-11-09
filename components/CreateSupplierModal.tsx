@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase'
 import { TRADES } from '@/types'
 import { useRouter } from 'next/navigation'
 import { PhoneInput } from './PhoneInput'
+import { StarInput } from './StarInput'
 
 type CreateSupplierModalProps = {
   userId: string
@@ -21,6 +22,13 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
     description: '',
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [rating, setRating] = useState({
+    quality: null as number | null,
+    price: null as number | null,
+    reliability: null as number | null,
+    communication: null as number | null,
+    comment: '',
+  })
 
   const handleTradeToggle = (trade: string) => {
     setFormData(prev => ({
@@ -76,7 +84,7 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
       }
 
       // Create supplier
-      const { error: insertError } = await supabase
+      const { data: supplierData, error: insertError } = await supabase
         .from('suppliers')
         .insert({
           name: formData.name,
@@ -86,8 +94,31 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
           image_url: imageUrl,
           created_by: userId,
         })
+        .select()
+        .single()
 
       if (insertError) throw insertError
+
+      // Create rating if any rating data is provided
+      const hasRating = rating.quality !== null || rating.price !== null ||
+                        rating.reliability !== null || rating.communication !== null ||
+                        rating.comment.trim() !== ''
+
+      if (hasRating && supplierData) {
+        const { error: ratingError } = await supabase
+          .from('ratings')
+          .insert({
+            supplier_id: supplierData.id,
+            user_id: userId,
+            quality: rating.quality,
+            price: rating.price,
+            reliability: rating.reliability,
+            communication: rating.communication,
+            comment: rating.comment || null,
+          })
+
+        if (ratingError) throw ratingError
+      }
 
       router.refresh()
       onClose()
@@ -176,6 +207,54 @@ export function CreateSupplierModal({ userId, onClose }: CreateSupplierModalProp
               onChange={(e) => setImageFile(e.target.files?.[0] || null)}
               className="w-full text-sm text-neutral-600 file:mr-4 file:py-2 file:px-4 file:rounded-input file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 file:cursor-pointer cursor-pointer"
             />
+          </div>
+
+          {/* Optional Rating Section */}
+          <div className="pt-6 border-t border-neutral-200">
+            <h3 className="text-lg font-bold text-neutral-900 mb-2">
+              דירוג <span className="text-neutral-500 font-normal text-sm">(אופציונלי)</span>
+            </h3>
+            <p className="text-sm text-neutral-600 mb-4">
+              ניתן להוסיף דירוג ראשוני עם ההמלצה
+            </p>
+
+            <div className="space-y-4">
+              <StarInput
+                label="איכות"
+                value={rating.quality}
+                onChange={(value) => setRating({ ...rating, quality: value })}
+              />
+
+              <StarInput
+                label="מחיר"
+                value={rating.price}
+                onChange={(value) => setRating({ ...rating, price: value })}
+              />
+
+              <StarInput
+                label="אמינות"
+                value={rating.reliability}
+                onChange={(value) => setRating({ ...rating, reliability: value })}
+              />
+
+              <StarInput
+                label="תקשורת"
+                value={rating.communication}
+                onChange={(value) => setRating({ ...rating, communication: value })}
+              />
+
+              <div>
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">
+                  הערה <span className="text-neutral-400 font-normal">(אופציונלי)</span>
+                </label>
+                <textarea
+                  value={rating.comment}
+                  onChange={(e) => setRating({ ...rating, comment: e.target.value })}
+                  className="input-field h-28 resize-none"
+                  placeholder="שתפו אותנו בחוויה..."
+                />
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-neutral-200">

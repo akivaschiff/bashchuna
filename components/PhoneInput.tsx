@@ -128,10 +128,18 @@ export function PhoneInput({
           required={required}
           value={displayValue}
           onChange={handleInputChange}
+          onInvalid={(e) => {
+            e.preventDefault()
+            const normalized = normalizePhoneNumber(displayValue)
+            if (!isValidIsraeliPhone(normalized)) {
+              (e.target as HTMLInputElement).setCustomValidity('פורמט: 05 ואחריו 8 ספרות')
+            }
+          }}
+          onInput={(e) => {
+            (e.target as HTMLInputElement).setCustomValidity('')
+          }}
           className={`input-field text-left flex-1 ${className}`}
           placeholder={placeholder}
-          pattern="05[0-9]{8}"
-          title="פורמט: 05 ואחריו 8 ספרות"
           autoComplete="tel"
           name="phone"
         />
